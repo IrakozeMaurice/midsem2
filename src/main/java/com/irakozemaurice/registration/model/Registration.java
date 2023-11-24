@@ -4,13 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,12 +32,10 @@ public class Registration {
 	@Temporal(TemporalType.DATE)
 	private LocalDate registrationDate;
 
-	// @JsonBackReference
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "student_id")
 	private Student student;
 
-	// @JsonBackReference
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "semester_id")
 	private Semester semester;
@@ -48,7 +44,6 @@ public class Registration {
 	@JoinTable(name = "course_registration", joinColumns = @JoinColumn(name = "registration_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> courses;
 
-	// @JsonBackReference
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "au_id")
 	private AcademicUnit academicUnit;

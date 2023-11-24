@@ -12,5 +12,4 @@ public interface SemesterService {
 
 	Semester findById(int id);
 
-	void deleteById(int id);
 }

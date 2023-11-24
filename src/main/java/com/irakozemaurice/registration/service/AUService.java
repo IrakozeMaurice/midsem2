@@ -15,5 +15,4 @@ public interface AUService {
 
 	AcademicUnit findByDepartment(Department department_name);
 
-	void deleteById(int id);
 }

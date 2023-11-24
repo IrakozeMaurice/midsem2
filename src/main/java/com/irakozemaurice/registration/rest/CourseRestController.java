@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.irakozemaurice.registration.exceptions.ErrorResponse;
 import com.irakozemaurice.registration.exceptions.ResourceNotFoundException;
+import com.irakozemaurice.registration.model.AcademicUnit;
 import com.irakozemaurice.registration.model.Course;
+import com.irakozemaurice.registration.model.Department;
+import com.irakozemaurice.registration.service.AUService;
 import com.irakozemaurice.registration.service.CourseService;
 
 @RestController
@@ -24,40 +28,58 @@ public class CourseRestController {
 
 	private CourseService service;
 
+	private AUService auService;
+
 	@Autowired
-	public CourseRestController(CourseService service) {
+	public CourseRestController(CourseService service, AUService auService) {
+
 		this.service = service;
+
+		this.auService = auService;
 	}
 
 	@GetMapping("/courses")
 	public List<Course> getCourses() {
+
 		List<Course> courses = service.findAll();
+
 		return courses;
+
 	}
 
 	@PostMapping("/courses")
 	public Course addCourse(@RequestBody Course theCourse) {
+
 		theCourse.setId(0);
 
-		// save the au
 		Course dbCourse = service.save(theCourse);
 
-		// dbaAcademicUnit has a new id from the database
 		return dbCourse;
+
 	}
 
-	// @PutMapping("/aus")
-	// public AcademicUnit updateAcademicUnit(@RequestBody AcademicUnit
-	// theAcademicUnit) {
+	@GetMapping("/courses/perStudent")
+	public List<Course> getCoursesPerStudent(@RequestParam(value = "student_id", required = true) int student_id) {
 
-	// // update the AcademicUnit
-	// AcademicUnit dbAcademicUnit = auService.save(theAcademicUnit);
+		List<Course> courses = service.findByStudent(student_id);
 
-	// // dbAcademicUnit has a new id from the database
-	// return dbAcademicUnit;
-	// }
+		return courses;
 
-	// add mapping for GET /aus/{auId} - get AcademicUnit by id
+	}
+
+	@GetMapping("/courses/perDepartmentAndSemester")
+	public List<Course> getCoursesPerDepartmentAndSemester(
+			@RequestParam(value = "sem_id", required = true) int sem_id,
+			@RequestParam(value = "department_name", required = true) Department department_name) {
+
+		AcademicUnit au = auService.findByDepartment(department_name);
+
+		List<Course> courses = service.findByDepartmentAndSemester(sem_id, au.getId());
+
+		return courses;
+
+	}
+
 	@GetMapping("/courses/{id}")
 	public Course getCourse(@PathVariable int id) {
 
@@ -70,30 +92,19 @@ public class CourseRestController {
 		return theCourse;
 	}
 
-	// // add mapping for DELETE /aus/{auId} - delete an AcademicUnit
-	// @DeleteMapping("/aus/{auId}")
-	// public String deleteAcademicUnit(@PathVariable int auId) {
-
-	// AcademicUnit theAcademicUnit = auService.findById(auId);
-
-	// if (theAcademicUnit == null)
-	// throw new RuntimeException("AcademicUnit id not found - " + auId);
-
-	// // delete the AcademicUnit
-	// auService.deleteById(auId);
-
-	// return "deleted AcademicUnit - " + auId;
-	// }
-
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(ResourceNotFoundException e) {
+
 		ErrorResponse errorResponse = new ErrorResponse();
 
 		errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+
 		errorResponse.setMessage(e.getMessage());
+
 		errorResponse.setTimestamp(System.currentTimeMillis());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
 	}
 
 }

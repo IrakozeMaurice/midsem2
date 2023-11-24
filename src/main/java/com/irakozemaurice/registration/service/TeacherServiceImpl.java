@@ -16,16 +16,22 @@ public class TeacherServiceImpl implements TeacherService {
 
 	@Autowired
 	public TeacherServiceImpl(TeacherRepository dao) {
+
 		this.repository = dao;
+
 	}
 
 	@Override
 	public List<Teacher> findAll() {
+
 		return repository.findAll();
+
 	}
 
 	public Teacher save(Teacher teacher) {
+
 		return repository.save(teacher);
+
 	}
 
 	@Override
@@ -34,15 +40,15 @@ public class TeacherServiceImpl implements TeacherService {
 		Optional<Teacher> result = repository.findById(theId);
 
 		if (result.isPresent()) {
-			Teacher theTeacher = result.get();
-			return theTeacher;
-		}
-		return null;
-	}
 
-	@Override
-	public void deleteById(int theId) {
-		repository.deleteById(theId);
+			Teacher theTeacher = result.get();
+
+			return theTeacher;
+
+		}
+
+		return null;
+
 	}
 
 }

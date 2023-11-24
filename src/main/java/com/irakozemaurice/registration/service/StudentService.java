@@ -11,11 +11,12 @@ public interface StudentService {
 
 	List<Registration> findBySemester(int sem_id);
 
-	List<Registration> findByDepartmentAndSemester(int au_id, int sem_id);
+	List<Registration> findByDepartmentAndSemester(int sem_id, int au_id);
+
+	List<Registration> findByCourseAndSemester(int sem_id, int course_id);
 
 	Student save(Student theStudent);
 
 	Student findById(int theId);
 
-	void deleteById(int theId);
 }

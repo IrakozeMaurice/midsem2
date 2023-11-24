@@ -17,21 +17,22 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Autowired
 	public RegistrationServiceImpl(RegistrationRepository dao) {
+
 		this.repository = dao;
+
 	}
 
 	@Override
 	public List<Registration> findAll() {
+
 		return repository.findAll();
+
 	}
 
-	// @Override
-	// public List<Registration> findBySemester(int sem_id) {
-	// return repository.findBySemester(sem_id);
-	// }
-
 	public Registration save(Registration registration) {
+
 		return repository.save(registration);
+
 	}
 
 	@Override
@@ -40,15 +41,15 @@ public class RegistrationServiceImpl implements RegistrationService {
 		Optional<Registration> result = repository.findById(theId);
 
 		if (result.isPresent()) {
-			Registration theRegistration = result.get();
-			return theRegistration;
-		}
-		return null;
-	}
 
-	@Override
-	public void deleteById(int theId) {
-		repository.deleteById(theId);
+			Registration theRegistration = result.get();
+
+			return theRegistration;
+
+		}
+
+		return null;
+
 	}
 
 }

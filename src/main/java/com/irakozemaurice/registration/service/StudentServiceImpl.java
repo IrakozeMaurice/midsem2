@@ -17,27 +17,43 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	public StudentServiceImpl(StudentRepository studentDao) {
+
 		this.repository = studentDao;
+
 	}
 
 	@Override
 	public List<Student> findAll() {
+
 		return repository.findAll();
+
 	}
 
 	@Override
 	public List<Registration> findBySemester(int sem_id) {
+
 		return repository.findBySemester(sem_id);
+
 	}
 
 	@Override
-	public List<Registration> findByDepartmentAndSemester(int au_id, int sem_id) {
-		return repository.findByDepartmentAndSemester(au_id, sem_id);
+	public List<Registration> findByDepartmentAndSemester(int sem_id, int au_id) {
+
+		return repository.findByDepartmentAndSemester(sem_id, au_id);
+
+	}
+
+	@Override
+	public List<Registration> findByCourseAndSemester(int sem_id, int course_id) {
+
+		return repository.findByCourseAndSemester(sem_id, course_id);
+
 	}
 
 	public Student save(Student theStudent) {
-		System.out.println(theStudent);
+
 		return repository.save(theStudent);
+
 	}
 
 	@Override
@@ -47,16 +63,14 @@ public class StudentServiceImpl implements StudentService {
 
 		Student theStudent = null;
 		if (result.isPresent()) {
+
 			theStudent = result.get();
+
 			return theStudent;
+
 		}
 
 		return null;
-	}
-
-	@Override
-	public void deleteById(int theId) {
-		repository.deleteById(theId);
 	}
 
 }

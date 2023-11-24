@@ -8,11 +8,8 @@ public interface RegistrationService {
 
 	List<Registration> findAll();
 
-	// List<Registration> findBySemester(int sem_id);
-
 	Registration save(Registration s);
 
 	Registration findById(int id);
 
-	void deleteById(int id);
 }

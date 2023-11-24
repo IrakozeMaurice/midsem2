@@ -5,10 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,12 +36,11 @@ public class Course {
 	private int credits;
 
 	@ManyToMany()
-	// @JsonIgnore
+	@JsonIgnore
 	@JoinTable(name = "academicUnit_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "au_id"))
 	private List<AcademicUnit> academicUnits;
 
 	@ManyToMany()
-	@JsonIgnore
 	@JoinTable(name = "course_teacher", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "teacher_id"))
 	private List<Teacher> teachers;
 

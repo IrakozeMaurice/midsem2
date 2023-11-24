@@ -12,5 +12,4 @@ public interface TeacherService {
 
 	Teacher findById(int id);
 
-	void deleteById(int id);
 }

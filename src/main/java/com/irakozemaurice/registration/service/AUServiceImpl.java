@@ -17,16 +17,22 @@ public class AUServiceImpl implements AUService {
 
 	@Autowired
 	public AUServiceImpl(AURepository auDao) {
+
 		this.auRepository = auDao;
+
 	}
 
 	@Override
 	public List<AcademicUnit> findAll() {
+
 		return auRepository.findAll();
+
 	}
 
 	public AcademicUnit save(AcademicUnit au) {
+
 		return auRepository.save(au);
+
 	}
 
 	@Override
@@ -35,9 +41,13 @@ public class AUServiceImpl implements AUService {
 		Optional<AcademicUnit> result = auRepository.findById(theId);
 
 		if (result.isPresent()) {
+
 			AcademicUnit theAU = result.get();
+
 			return theAU;
+
 		}
+
 		return null;
 	}
 
@@ -47,15 +57,15 @@ public class AUServiceImpl implements AUService {
 		Optional<AcademicUnit> result = auRepository.findByDepartment(department_name);
 
 		if (result.isPresent()) {
-			AcademicUnit theAU = result.get();
-			return theAU;
-		}
-		return null;
-	}
 
-	@Override
-	public void deleteById(int theId) {
-		auRepository.deleteById(theId);
+			AcademicUnit theAU = result.get();
+
+			return theAU;
+
+		}
+
+		return null;
+
 	}
 
 }

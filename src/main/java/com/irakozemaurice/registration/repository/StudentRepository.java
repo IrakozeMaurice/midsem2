@@ -16,4 +16,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
 	@Query("SELECT r FROM Registration r WHERE r.semester.id = :sem_id AND r.academicUnit.id = :au_id")
 	List<Registration> findByDepartmentAndSemester(@Param("sem_id") int sem_id, @Param("au_id") int au_id);
+
+	@Query("SELECT r FROM Registration r JOIN r.courses c WHERE r.semester.id = :sem_id AND c.id = :course_id")
+	List<Registration> findByCourseAndSemester(@Param("sem_id") int sem_id, @Param("course_id") int course_id);
 }

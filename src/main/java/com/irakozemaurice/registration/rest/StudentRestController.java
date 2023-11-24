@@ -29,28 +29,36 @@ import com.irakozemaurice.registration.service.StudentService;
 public class StudentRestController {
 
 	private StudentService service;
+
 	private AUService auService;
 
 	@Autowired
 	public StudentRestController(StudentService service, AUService auService) {
+
 		this.service = service;
+
 		this.auService = auService;
+
 	}
 
 	@GetMapping("/students")
 	public List<Student> getStudents() {
+
 		List<Student> students = service.findAll();
+
 		return students;
+
 	}
 
 	@PostMapping("/students")
 	public Student addStudent(@RequestBody Student theStudent) {
-		System.out.println(theStudent);
+
 		theStudent.setId(0);
 
 		Student dbStudent = service.save(theStudent);
 
 		return dbStudent;
+
 	}
 
 	@GetMapping("/students/perSemester")
@@ -62,26 +70,53 @@ public class StudentRestController {
 		List<Student> students = new ArrayList<>();
 
 		for (Registration registration : registrations) {
+
 			students.add(registration.getStudent());
+
 		}
+
 		return students;
+
 	}
 
 	@GetMapping("/students/perDepartmentAndSemester")
 	public List<Student> getStudentsPerDepartmentAndSemester(
-			@RequestParam(value = "department_name", required = true) Department department_name,
-			@RequestParam(value = "sem_id", required = true) int sem_id) {
+			@RequestParam(value = "sem_id", required = true) int sem_id,
+			@RequestParam(value = "department_name", required = true) Department department_name) {
 
 		AcademicUnit au = auService.findByDepartment(department_name);
-		System.out.println(au.getId());
+
 		List<Registration> registrations = service.findByDepartmentAndSemester(sem_id, au.getId());
 
 		List<Student> students = new ArrayList<>();
 
 		for (Registration registration : registrations) {
+
 			students.add(registration.getStudent());
+
 		}
+
 		return students;
+
+	}
+
+	@GetMapping("/students/perCourseAndSemester")
+	public List<Student> getStudentsPerCourseAndSemester(
+			@RequestParam(value = "sem_id", required = true) int sem_id,
+			@RequestParam(value = "course_id", required = true) int course_id) {
+
+		List<Registration> registrations = service.findByCourseAndSemester(sem_id, course_id);
+
+		List<Student> students = new ArrayList<>();
+
+		for (Registration registration : registrations) {
+
+			students.add(registration.getStudent());
+
+		}
+
+		return students;
+
 	}
 
 	@GetMapping("/students/{studentId}")
@@ -90,7 +125,9 @@ public class StudentRestController {
 		Student theStudent = service.findById(studentId);
 
 		if (theStudent == null) {
+
 			throw new ResourceNotFoundException("student id not found - " + studentId);
+
 		}
 
 		return theStudent;
@@ -98,13 +135,17 @@ public class StudentRestController {
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(ResourceNotFoundException e) {
+
 		ErrorResponse errorResponse = new ErrorResponse();
 
 		errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+
 		errorResponse.setMessage(e.getMessage());
+
 		errorResponse.setTimestamp(System.currentTimeMillis());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
 	}
 
 }

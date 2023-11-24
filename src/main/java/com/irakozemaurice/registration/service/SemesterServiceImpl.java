@@ -16,16 +16,22 @@ public class SemesterServiceImpl implements SemesterService {
 
 	@Autowired
 	public SemesterServiceImpl(SemesterRepository dao) {
+
 		this.repository = dao;
+
 	}
 
 	@Override
 	public List<Semester> findAll() {
+
 		return repository.findAll();
+
 	}
 
 	public Semester save(Semester semester) {
+
 		return repository.save(semester);
+
 	}
 
 	@Override
@@ -34,15 +40,14 @@ public class SemesterServiceImpl implements SemesterService {
 		Optional<Semester> result = repository.findById(theId);
 
 		if (result.isPresent()) {
-			Semester theSemester = result.get();
-			return theSemester;
-		}
-		return null;
-	}
 
-	@Override
-	public void deleteById(int theId) {
-		repository.deleteById(theId);
+			Semester theSemester = result.get();
+
+			return theSemester;
+
+		}
+
+		return null;
 	}
 
 }

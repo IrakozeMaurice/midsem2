@@ -27,18 +27,25 @@ public class SemesterRestController {
 
 	@Autowired
 	public SemesterRestController(SemesterService service) {
+
 		this.service = service;
+
 	}
 
 	@GetMapping("/semesters")
 	public List<Semester> getSemesters() {
+
 		List<Semester> semesters = service.findAll();
+
 		return semesters;
+
 	}
 
 	@GetMapping("/semesters/types")
 	public SemesterType[] getTypes() {
+
 		return SemesterType.values();
+
 	}
 
 	@PostMapping("/semesters")
@@ -65,13 +72,17 @@ public class SemesterRestController {
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(ResourceNotFoundException e) {
+
 		ErrorResponse errorResponse = new ErrorResponse();
 
 		errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+
 		errorResponse.setMessage(e.getMessage());
+
 		errorResponse.setTimestamp(System.currentTimeMillis());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
 	}
 
 }
